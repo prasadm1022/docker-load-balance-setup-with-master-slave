@@ -1,0 +1,38 @@
+version: '3'
+services:
+  database-master:
+    container_name: database-master
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_TCP_PORT: 8010
+      MYSQL_DATABASE: upwork
+      MYSQL_USER: upwork
+      MYSQL_PASSWORD: upwork
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --server-id=1
+      --log-bin=mysql-master-bin
+    volumes:
+      - "./docker/mysql/init-master.sql:/docker-entrypoint-initdb.d/init-master.sql"
+    restart: always
+  database-slave:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_TCP_PORT: 8020
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --server-id=2
+      --log-bin=mysql-slave-bin
+      --relay_log=ep-mysql-relay-bin
+      --read_only=1
+    volumes:
+      - "./docker/mysql/init-slave.sql:/docker-entrypoint-initdb.d/init-slave.sql"
+    depends_on:
+      - database-master
+    restart: always
