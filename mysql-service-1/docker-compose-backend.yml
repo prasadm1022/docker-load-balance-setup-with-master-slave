@@ -1,0 +1,17 @@
+version: '3'
+services:
+  backend-server:
+    image: tomcat:9
+    volumes:
+      - "./target/authentication-service.war:/usr/local/tomcat/webapps/authentication-service.war"
+    restart: always
+  load-balance-server:
+    container_name: load-balance-server
+    image: nginx
+    volumes:
+      - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+    depends_on:
+      - backend-server
+    restart: always
+    ports:
+      - "7000:80"
