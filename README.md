@@ -53,7 +53,7 @@
 
 ### 3. Example Scenario (Ex :- authentication-service)
 
-![](https://github.com/prasadm-upwork/docker-load-balancing-complete/raw/main/load-balance-chart.drawio.png)
+![](https://github.com/prasadm1022/docker-load-balancing-complete/blob/main/architecture.png)
 
 * first run the "**_docker-compose -f docker-compose-database.yml up --scale database-slave=2_**" command to start the database server.
 
